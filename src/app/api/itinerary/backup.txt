@@ -1,0 +1,31 @@
+function parseItinerary(
+  output: string
+): Record<string, { name: string; details: string }> {
+  const itinerary: Record<string, { name: string; details: string }> = {};
+
+  // Improved regex pattern to capture Day X with more flexibility
+  const dayPattern = /(\*\*Day \d+.*?\):.*?)(?=\n\*\*Day \d+|$)/gs; // Match "**Day X ..." and include details after it
+  const dayMatches = [...output.matchAll(dayPattern)];
+
+  console.log("Day matches found:", dayMatches);
+
+  // Process each day found in the regex match
+  dayMatches.forEach((match, index) => {
+    const dayNumber = `day${index + 1}`; // "day1", "day2", etc.
+    const dayContent = match[1].trim();
+
+    // Extract day name (e.g., "Day 1 (December 19th, 2024): Arrival & Beach Relaxation")
+    const dayNameMatch = dayContent.match(/\*\*Day \d+: (.*?)(?=\))/);
+    const dayName = dayNameMatch ? dayNameMatch[1] : `Day ${index + 1}`;
+
+    // Extract the activities for the day (everything after the "Day X" part)
+    const activities = dayContent.replace(/\*\*Day \d+: .+/g, "").trim();
+
+    itinerary[dayNumber] = {
+      name: dayName,
+      details: activities || "No details provided", // Fallback if no activities
+    };
+  });
+
+  return itinerary;
+}
