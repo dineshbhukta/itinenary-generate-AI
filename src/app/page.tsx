@@ -101,7 +101,7 @@ export default function Home() {
     setFlights([]);
 
     try {
-      const locationsAndDates = locations.map((loc) => ({
+      const locationsAndDates = locations?.map((loc) => ({
         location: loc,
         from: format(dateRanges[0].startDate!, "yyyy-MM-dd"),
         to: format(dateRanges[0].endDate!, "yyyy-MM-dd"),
@@ -120,7 +120,7 @@ export default function Home() {
       }
 
       const itineraryDetails = data.itinerary
-        .map((day: string) => day.replace(/[*_`]/g, "").trim())
+        ?.map((day: string) => day.replace(/[*_`]/g, "").trim())
         .join("\n\n");
 
       setItinerary(itineraryDetails);
@@ -174,7 +174,7 @@ export default function Home() {
                     ref={provided.innerRef}
                     className="space-y-3"
                   >
-                    {locations.map((loc, index) => (
+                    {locations?.map((loc, index) => (
                       <Draggable
                         key={index}
                         draggableId={`location-${index}`}
@@ -290,7 +290,7 @@ export default function Home() {
               </h2>
 
               <div ref={itineraryRef}>
-                {itinerary.split(/\n(?=Day \d+)/).map((dayBlock, index) => {
+                {itinerary.split(/\n(?=Day \d+)/)?.map((dayBlock, index) => {
                   const [headingLine, ...detailsLines] = dayBlock.split("\n");
                   return (
                     <div key={index} className="mb-8">
@@ -299,8 +299,8 @@ export default function Home() {
                       </h3>
                       <ul className="list-disc list-inside text-gray-800 space-y-1">
                         {detailsLines
-                          .filter((line) => line.trim() !== "")
-                          .map((line, idx) => (
+                          ?.filter((line) => line.trim() !== "")
+                          ?.map((line, idx) => (
                             <li key={idx}>{line.trim()}</li>
                           ))}
                       </ul>
@@ -341,7 +341,7 @@ export default function Home() {
                     ref={scrollRef}
                     className="flex space-x-4 overflow-x-auto pb-2 hide-scrollbar scroll-smooth"
                   >
-                    {flights.map((flight) => (
+                    {flights?.map((flight) => (
                       <div
                         key={flight.id}
                         className="min-w-[300px] bg-gray-300 rounded-xl shadow-md p-4 border border-gray-200"
